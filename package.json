@@ -1,0 +1,22 @@
+{
+  "name": "pixijs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "pixi-viewport": "^6.0.3",
+    "pixi.js": "^8.6.1"
+  },
+  "devDependencies": {
+    "@pixi/devtools": "^2.0.1",
+    "vite": "^6.0.1"
+  }
+}
