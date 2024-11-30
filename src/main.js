@@ -3,8 +3,6 @@ import { initDevtools } from "@pixi/devtools";
 import { Viewport } from "pixi-viewport";
 
 (async () => {
-  const WORLD_WIDTH = 4000;
-  const WORLD_HEIGHT = 2000;
   // Step 2
   const app = new Application();
 
@@ -12,6 +10,7 @@ import { Viewport } from "pixi-viewport";
   await app.init({
     resizeTo: window,
     antialias: true,
+    backgroundColor: "0xffffff",
   });
 
   initDevtools({
@@ -21,14 +20,18 @@ import { Viewport } from "pixi-viewport";
   app.canvas.style.position = "absolute";
   document.body.appendChild(app.canvas);
 
-  // main logic from below
+  //! main logic from below
+
+  const WORLD_WIDTH = 3383;
+  const WORLD_HEIGHT = 1358;
 
   const loaderContainer = new Graphics();
   loaderContainer.fill(0x000000); // Semi-transparent black background
   loaderContainer.rect(0, 0, app.screen.width, app.screen.height);
   app.stage.addChild(loaderContainer);
 
-  const loadingText = new Text("Loading...", {
+  const loadingText = new Text({
+    text: "Loading...",
     fontFamily: "Arial",
     fontSize: 32,
     fill: 0xffffff,
@@ -63,17 +66,30 @@ import { Viewport } from "pixi-viewport";
       right: true, // Restrict right panning
       top: true, // Restrict top panning
       bottom: true, // Restrict bottom panning
+      direction: "all",
       underflow: "center",
     });
   viewport.fit();
   viewport.moveCenter(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 
-  const imagePromise = Assets.load("/img/map5.png");
+  const borderLine = new Graphics();
+
+  borderLine
+    .stroke(10, 0xff0000) // Red line with specified width
+    .rect(0, 0, viewport.worldWidth, viewport.worldHeight);
+
+  viewport.addChild(borderLine);
+
+  console.log(viewport.worldHeight, viewport.worldWidth);
+  console.log("Border Line:", borderLine.getBounds());
+
+  //! iamge loader below
+  const imagePromise = Assets.load("/img/crop-map.png");
 
   imagePromise.then((resolvedImage) => {
     const image = Sprite.from(resolvedImage);
-    image.width = 4096;
-    image.height = 2160;
+    image.width = WORLD_WIDTH;
+    image.height = WORLD_HEIGHT;
     viewport.addChild(image);
 
     app.stage.removeChild(loaderContainer);
